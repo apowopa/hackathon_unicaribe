@@ -1,0 +1,97 @@
+﻿id,nombre,piso,edificio_id
+1,Rectoría,PB,1
+2,Jurídico,PB,1
+3,Atención y Correspondencia,PB,1
+4,Unidad de Transparencia,PB,1
+5,Coordinación Administrativa,PB,1
+6,Recursos Humanos,PB,1
+7,Compras,PB,1
+8,Aula Consorcio,PB,1
+9,Sala de Juntas Consorcio,PB,1
+10,Aulas 3A - 7A,PB,1
+11,Economía y Negocios (S y P),N1,1
+12,Inclusión Educativa,N1,1
+13,SITE A,N1,1
+14,Aulas 8A - 14A,N1,1
+15,Cabina de Radio,N2,1
+16,Orientación Personal,N2,1
+17,Aulas 15A - 24A,N2,1
+18,Secretaría Académica,PB,2
+19,Desarrollo Académico,PB,2
+20,Servicios Escolares,PB,2
+21,Caja Múltiple,PB,2
+22,Enfermería,PB,2
+23,Apoyo a la Docencia,PB,2
+24,Lab. Fisicoquímica,PB,2
+25,Aula de Proyecciones,PB,2
+26,Aulas 1B y 2B,PB,2
+27,Desarrollo Humano (S y P),N1,2
+28,SITE B,N1,2
+29,Taller de Alimentos y Bebidas 1,N1,2
+30,Taller de Panadería,N1,2
+31,Oficina Talleres Gastronómicos,N1,2
+32,Aulas 3B - 5B,N2,2
+33,Desarrollo Estudiantil (S y P),PB,3
+34,Ludoteca,PB,3
+35,Idiomas (P),PB,3
+36,SITE C,PB,3
+37,"Aulas 5C, 15C, 16C",PB,3
+38,Desarrollo Humano (SAE),N1,3
+39,Cámara de Gesell,N1,3
+40,Aulas 6C - 8C,N1,3
+41,Aulas de Cómputo 1C - 4C,N1,3
+42,Aulas 9C - 14C,N2,3
+43,Auditorio Principal,PB,4
+44,Secretaría de Extensión y Vinculación,PB,4
+45,Vinculación Universitaria,PB,4
+46,Servicio Social,PB,4
+47,Comunicación,PB,4
+48,Sostenibilidad,PB,4
+49,Prácticas Profesionales,PB,4
+50,Tienda Universitaria,PB,4
+51,Patronato de la Universidad,PB,4
+52,Biblioteca,N1,4
+53,Centro de Investigación Aplicada,N1,4
+54,Coordinación Gastronomía (S/O y P),PB,5
+55,SITE E,PB,5
+56,Aulas 1E - 6E,PB,5
+57,Coordinación de Posgrado (S y P),N1,5
+58,Taller de Alimentos 2 y 3,N1,5
+59,Taller de Repostería y Panadería,N1,5
+60,Almacén Gastronomía,N1,5
+61,Aula Sensorial,N1,5
+62,Cámara Gesell,N1,5
+63,Coordinación Turismo Sustentable,N2,5
+64,"Aulas 7E, 8E, 10E - 12E",N2,5
+65,Taller Turismo Salud,N2,5
+66,Aulas 13E - 18E,N3,5
+67,Planeación y Desarrollo Institucional,PB,6
+68,Planeación y Programación,PB,6
+69,Gestión de la Calidad,PB,6
+70,Control y Evaluación,PB,6
+71,Informática,PB,6
+72,Dirección de Programas de Informática,PB,6
+73,Órgano de Control,PB,6
+74,SITE F,N1,6
+75,Caja,N1,6
+76,Contabilidad,N1,6
+77,Sistemas,N1,6
+78,Infraestructura,N1,6
+79,Control Presupuestal,N1,6
+80,Tesorería,N1,6
+81,Academia,PB,7
+82,Laboratorio de Tecnologías Ambientales,PB,7
+83,Laboratorio de Microbiología e Inocuidad de Alimentos,PB,7
+84,Laboratorio de Agua y Suelos,PB,7
+85,Laboratorio de Redes y Sistemas de Información,PB,7
+86,Laboratorio de Innovación y Arquitectura de Software,PB,7
+87,Área de Maestros (CBI),N1,7
+88,Laboratorio de Automatización,N1,7
+89,Laboratorio de Ingeniería de Software,N1,7
+90,Laboratorio de Sistemas de Control de Manufactura,N1,7
+91,Laboratorio de Instalación de Software y Base de Datos (1 y 2),N1,7
+92,Área de Maestros (CBI),N2,7
+93,Laboratorio de Ingeniería de Métodos,N2,7
+94,Laboratorio de Logística y Cadena de Suministro,N2,7
+95,Aulas Smart,N2,7
+96,Aulas 8G - 14G,N3,7
