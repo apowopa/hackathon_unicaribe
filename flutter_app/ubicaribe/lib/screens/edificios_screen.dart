@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ubicaribe/theme/app_colors.dart'; // ¡Aquí importamos tus colores!
 import 'package:ubicaribe/database/db_helper.dart';
-// import 'package:ubicaribe/models/edificio.dart'; // Descomenta esto para el modelo
+import 'package:ubicaribe/models/edificio.dart'; // Descomenta esto para el modelo
+import 'package:ubicaribe/screens/edificio_detalle_screen.dart';
 
 class EdificiosView extends StatefulWidget {
   const EdificiosView({super.key});
@@ -93,3 +94,85 @@ class _EdificiosViewState extends State<EdificiosView> {
         ),
       ),
     );
+  }
+}
+
+
+class _BuildingCard extends StatelessWidget {
+  final Edificio edificio;
+
+  const _BuildingCard({required this.edificio});
+
+  String _obtenerLetra(String nombre) {
+    if (nombre.isEmpty) return '?';
+    final trimmed = nombre.trimRight();
+    return trimmed[trimmed.length - 1].toUpperCase();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => EdificioDetalleScreen(edificio: edificio),
+            ),
+          );
+        },
+        child: Ink(
+          decoration: BoxDecoration(
+            // ¡Tus colores oficiales!
+            gradient: const LinearGradient(
+              colors: [Color(0xFF7037CD), Color(0xFF651F71)], // brightPurple y darkPurple
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: const Color(0xFF506EE5).withOpacity(0.3), // royalBlue
+              width: 1,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 56,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      _obtenerLetra(edificio.nombre),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  edificio.nombre,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.9),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
