@@ -2,10 +2,12 @@ import sqlite3
 from pathlib import Path
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from src.scrapper import UnicaribeScrapper
 from src.notificaciones import init_notificaciones, listar_notificaciones, crear_notificacion, marcar_leida
 
-DB_PATH = Path("data/unicaribe.db")
+BASE_DIR = Path(__file__).resolve().parent
+DB_PATH = BASE_DIR / "data" / "unicaribe.db"
 
 
 @asynccontextmanager
@@ -18,6 +20,13 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Unicaribe API", lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def get_db():

@@ -274,7 +274,8 @@ class UnicaribeScrapper:
             driver.quit()
 
     def etl(self):
-        data_dir = Path("data")
+        base_dir = Path(__file__).resolve().parent.parent
+        data_dir = base_dir / "data"
         data_dir.mkdir(exist_ok=True)
 
         directorio_csv = data_dir / "directorio_unicaribe.csv"
