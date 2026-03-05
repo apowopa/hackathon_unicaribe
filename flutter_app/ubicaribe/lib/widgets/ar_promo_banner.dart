@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ubicaribe/screens/ar_camera_screen.dart';
 import 'package:ubicaribe/theme/app_colors.dart';
 
 class ArPromoBanner extends StatelessWidget {
@@ -60,7 +61,14 @@ class ArPromoBanner extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                // Navega a la pantalla de Realidad Aumentada.
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const ArCameraScreen(),
+                  ),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.royalBlue,
                 foregroundColor: Colors.white,
