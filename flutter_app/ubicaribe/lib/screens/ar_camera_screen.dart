@@ -28,29 +28,89 @@ class BuildingAnnotation extends ArAnnotation {
 ///     NSCameraUsageDescription
 ///     NSLocationWhenInUseUsageDescription
 class ArCameraScreen extends StatefulWidget {
-  const ArCameraScreen({super.key});
+  /// Lugar seleccionado desde la barra de búsqueda.
+  /// Si es null no se muestra ningún marcador AR.
+  final String? destinoSeleccionado;
+
+  const ArCameraScreen({super.key, this.destinoSeleccionado});
 
   @override
   State<ArCameraScreen> createState() => _ArCameraScreenState();
 }
 
 class _ArCameraScreenState extends State<ArCameraScreen> {
-  // -------------------------------------------------------------------------
-  // TODO: CAMBIAR ESTAS COORDENADAS POR UNAS A 50 METROS DE TU CASA PARA PROBAR
-  // Puedes obtener lat/lng con Google Maps → clic derecho → "¿Qué hay aquí?"
-  // -------------------------------------------------------------------------
-  static const double _testLat = 18.4655;
-  static const double _testLng = -66.1057;
-
-  /// Construye un [Position] con valores hardcodeados para el modo demo.
-  /// La clase Position de geolocator no tiene constructor const, se usa factory.
-  final List<BuildingAnnotation> _annotations = [
+  /// Catálogo completo de edificios del campus UNICARIBE.
+  static final List<BuildingAnnotation> _todosLosEdificios = [
     BuildingAnnotation(
-      uid: 'edificio_prueba_01',
-      title: 'Edificio de Prueba',
+      uid: 'cafeteria',
+      title: 'Cafetería',
       position: Position(
-        latitude: _testLat,
-        longitude: _testLng,
+        latitude: 21.200972,
+        longitude: -86.823000,
+        timestamp: DateTime(2026),
+        accuracy: 1.0,
+        altitude: 0.0,
+        altitudeAccuracy: 1.0,
+        heading: 0.0,
+        headingAccuracy: 1.0,
+        speed: 0.0,
+        speedAccuracy: 1.0,
+      ),
+    ),
+    BuildingAnnotation(
+      uid: 'servicios_escolares',
+      title: 'Servicios Escolares',
+      position: Position(
+        latitude: 21.200750,
+        longitude: -86.823194,
+        timestamp: DateTime(2026),
+        accuracy: 1.0,
+        altitude: 0.0,
+        altitudeAccuracy: 1.0,
+        heading: 0.0,
+        headingAccuracy: 1.0,
+        speed: 0.0,
+        speedAccuracy: 1.0,
+      ),
+    ),
+    BuildingAnnotation(
+      uid: 'edificio_b',
+      title: 'Edificio B',
+      position: Position(
+        latitude: 21.200778,
+        longitude: -86.823528,
+        timestamp: DateTime(2026),
+        accuracy: 1.0,
+        altitude: 0.0,
+        altitudeAccuracy: 1.0,
+        heading: 0.0,
+        headingAccuracy: 1.0,
+        speed: 0.0,
+        speedAccuracy: 1.0,
+      ),
+    ),
+    BuildingAnnotation(
+      uid: 'edificio_f',
+      title: 'Edificio F',
+      position: Position(
+        latitude: 21.199972,
+        longitude: -86.824139,
+        timestamp: DateTime(2026),
+        accuracy: 1.0,
+        altitude: 0.0,
+        altitudeAccuracy: 1.0,
+        heading: 0.0,
+        headingAccuracy: 1.0,
+        speed: 0.0,
+        speedAccuracy: 1.0,
+      ),
+    ),
+    BuildingAnnotation(
+      uid: 'edificio_g',
+      title: 'Edificio G',
+      position: Position(
+        latitude: 21.200306,
+        longitude: -86.824583,
         timestamp: DateTime(2026),
         accuracy: 1.0,
         altitude: 0.0,
@@ -62,6 +122,16 @@ class _ArCameraScreenState extends State<ArCameraScreen> {
       ),
     ),
   ];
+
+  /// Devuelve solo el edificio que coincida con [destinoSeleccionado].
+  /// Si el destino es null la lista queda vacía y no aparece ningún marcador.
+  List<BuildingAnnotation> get _annotations {
+    final destino = widget.destinoSeleccionado;
+    if (destino == null) return [];
+    return _todosLosEdificios
+        .where((e) => e.title == destino)
+        .toList();
+  }
 
   @override
   void initState() {
@@ -140,6 +210,23 @@ class _ArCameraScreenState extends State<ArCameraScreen> {
             showDebugInfoSensor: false,
             // Callback requerido: recibe la posición actual del usuario.
             onLocationChange: (Position position) {},
+
+            // --- Calibración de distancia ---
+            // Solo muestra edificios dentro de un radio de 300 m.
+            // Evita que puntos lejanos se aglomeren en el centro del radar.
+            maxVisibleDistance: 300,
+
+            // --- Tamaño del radar ---
+            // Radar discreto de 110 px de diámetro.
+            radarWidth: 110,
+
+            // --- Posición del radar ---
+            // Lo colocamos en la parte inferior-central para no tapar la cámara.
+            radarPosition: RadarPosition.bottomCenter,
+
+            // --- Estilo del radar ---
+            backgroundRadar: AppColors.cardDark,
+            markerColor: AppColors.lightBlue,
           ),
 
           // -----------------------------------------------------------------
