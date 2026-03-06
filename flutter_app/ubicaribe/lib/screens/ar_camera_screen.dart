@@ -1,6 +1,7 @@
 import 'package:ar_location_view/ar_location_view.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:ubicaribe/theme/app_colors.dart';
 
 // ---------------------------------------------------------------------------
@@ -124,7 +125,6 @@ class _ArCameraScreenState extends State<ArCameraScreen> {
   ];
 
   /// Devuelve solo el edificio que coincida con [destinoSeleccionado].
-  /// Si el destino es null la lista queda vacía y no aparece ningún marcador.
   List<BuildingAnnotation> get _annotations {
     final destino = widget.destinoSeleccionado;
     if (destino == null) return [];
@@ -133,11 +133,70 @@ class _ArCameraScreenState extends State<ArCameraScreen> {
         .toList();
   }
 
+  // -----------------------------------------------------------------------
+  // Estado de inicialización: permisos + GPS listos.
+  // -----------------------------------------------------------------------
+  bool _isReady = false;
+  String? _errorMessage;
+
   @override
   void initState() {
     super.initState();
-    // Muestra el aviso de demostración una vez terminado el primer frame.
+    _checkPermissionsAndInit();
+  }
+
+  /// Verifica permisos de cámara y ubicación, y que el GPS esté encendido.
+  /// Solo cuando todo OK muestra la cámara AR.
+  Future<void> _checkPermissionsAndInit() async {
+    // 1. Permiso de cámara
+    final cameraStatus = await Permission.camera.request();
+    if (!cameraStatus.isGranted) {
+      _setError('Se requiere acceso a la cámara para usar la vista AR.');
+      return;
+    }
+
+    // 2. Permiso de ubicación
+    final locationStatus = await Permission.locationWhenInUse.request();
+    if (!locationStatus.isGranted) {
+      _setError('Se requiere acceso a la ubicación para mostrar los marcadores.');
+      return;
+    }
+
+    // 3. Servicio de ubicación encendido
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      _setError(
+        'El servicio de ubicación está desactivado. '
+        'Enciéndelo en los ajustes de tu dispositivo.',
+      );
+      return;
+    }
+
+    // 4. Obtener la primera posición para confirmar que el GPS responde.
+    try {
+      await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          timeLimit: Duration(seconds: 10),
+        ),
+      );
+    } catch (_) {
+      _setError('No se pudo obtener la ubicación GPS. Intenta de nuevo.');
+      return;
+    }
+
+    // Todo en orden → mostramos la cámara AR y el diálogo de demo.
+    if (!mounted) return;
+    setState(() => _isReady = true);
     WidgetsBinding.instance.addPostFrameCallback((_) => _showDemoDialog());
+  }
+
+  void _setError(String message) {
+    if (!mounted) return;
+    setState(() {
+      _isReady = false;
+      _errorMessage = message;
+    });
   }
 
   /// Diálogo informativo que aparece al abrir la pantalla por primera vez.
@@ -194,8 +253,70 @@ class _ArCameraScreenState extends State<ArCameraScreen> {
     );
   }
 
+  // -----------------------------------------------------------------------
+  // Pantalla de carga / error mientras se inicializa GPS + permisos.
+  // -----------------------------------------------------------------------
+  Widget _buildLoadingOrError() {
+    return Scaffold(
+      backgroundColor: AppColors.backgroundDark,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (_errorMessage != null) ...[
+                const Icon(Icons.error_outline, color: AppColors.lightBlue, size: 48),
+                const SizedBox(height: 16),
+                Text(
+                  _errorMessage!,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white70, fontSize: 15, height: 1.5),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    setState(() {
+                      _errorMessage = null;
+                    });
+                    _checkPermissionsAndInit();
+                  },
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('Reintentar'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.royalBlue,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Volver', style: TextStyle(color: Colors.white54)),
+                ),
+              ] else ...[
+                const CircularProgressIndicator(color: AppColors.lightBlue),
+                const SizedBox(height: 20),
+                const Text(
+                  'Activando cámara y GPS…',
+                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Muestra la pantalla de carga/error hasta que todo esté listo.
+    if (!_isReady) return _buildLoadingOrError();
+
     return Scaffold(
       body: Stack(
         children: [
