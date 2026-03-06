@@ -200,33 +200,35 @@ class _ArCameraScreenState extends State<ArCameraScreen> {
       body: Stack(
         children: [
           // -----------------------------------------------------------------
-          // Vista AR principal.
-          // ar_location_view gestiona los permisos de cámara y ubicación
-          // automáticamente en tiempo de ejecución.
+          // Vista AR principal envuelta en SafeArea para que el radar
+          // no quede clippeado detrás de la barra de sistema (bottom).
           // -----------------------------------------------------------------
-          ArLocationWidget(
-            annotations: _annotations,
-            annotationViewBuilder: _buildAnnotationCard,
-            showDebugInfoSensor: false,
-            // Callback requerido: recibe la posición actual del usuario.
-            onLocationChange: (Position position) {},
+          SafeArea(
+            top: false,
+            child: Padding(
+              // Empuja el borde inferior del widget hacia arriba para que
+              // el radar no quede clippeado contra el borde de la pantalla.
+              padding: const EdgeInsets.only(bottom: 90),
+              child: ArLocationWidget(
+                annotations: _annotations,
+                annotationViewBuilder: _buildAnnotationCard,
+                showDebugInfoSensor: false,
+                onLocationChange: (Position position) {},
 
-            // --- Calibración de distancia ---
-            // Solo muestra edificios dentro de un radio de 300 m.
-            // Evita que puntos lejanos se aglomeren en el centro del radar.
-            maxVisibleDistance: 300,
+                // --- Calibración de distancia ---
+                maxVisibleDistance: 300,
 
-            // --- Tamaño del radar ---
-            // Radar discreto de 110 px de diámetro.
-            radarWidth: 110,
+                // --- Tamaño del radar (+10 % sobre 110 → 121) ---
+                radarWidth: 121,
 
-            // --- Posición del radar ---
-            // Lo colocamos en la parte inferior-central para no tapar la cámara.
-            radarPosition: RadarPosition.bottomCenter,
+                // --- Posición del radar centrada en la parte inferior ---
+                radarPosition: RadarPosition.bottomCenter,
 
-            // --- Estilo del radar ---
-            backgroundRadar: AppColors.cardDark,
-            markerColor: AppColors.lightBlue,
+                // --- Estilo del radar ---
+                backgroundRadar: AppColors.cardDark,
+                markerColor: AppColors.lightBlue,
+              ),
+            ),
           ),
 
           // -----------------------------------------------------------------
