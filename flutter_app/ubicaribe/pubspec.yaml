@@ -37,6 +37,11 @@ dependencies:
   sqflite: ^2.4.2
   path: ^1.9.1
 
+  # Realidad Aumentada basada en ubicación GPS
+  ar_location_view: ^2.0.16
+  geolocator: ^13.0.4
+  permission_handler: ^11.3.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
