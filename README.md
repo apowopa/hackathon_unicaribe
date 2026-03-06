@@ -193,7 +193,11 @@ La app solicitará automáticamente los siguientes permisos al acceder a la func
 
 ## 👥 Equipo
 
-Proyecto desarrollado para la **Universidad del Caribe**, Cancún, México.
+- Camila Cameras Ramirez - 250301086
+- Ana Valeria Del Mar Valladares Camara - 250300992
+- Keira Cristel Jimenez Correa - 250300982
+- Manuel Alberto Apolonio Cuevas - 220300773
+- Anneliese Nicolle Martínez Sánchez
 
 ---
 
